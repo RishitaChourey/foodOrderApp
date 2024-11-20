@@ -12,6 +12,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrder"
         tools:targetApi="31">
+
+        <!-- Splash Activity as the launcher activity -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Main activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+
+        <!-- Other activities -->
         <activity
             android:name=".OrderSummaryActivity"
             android:exported="false" />
@@ -24,30 +41,17 @@
         <activity
             android:name=".MenuActivity"
             android:exported="false" />
-        <activity
-            android:name=".FoodItem"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".FoodItem"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ListFoods"
             android:exported="false" />
         <activity
             android:name=".DetailActivity"
             android:exported="false" />
-        <activity
-            android:name=".splash"
-            android:exported="false" />
-        <activity
-            android:name=".Menu"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--        <activity-->
+<!--            android:name=".Menu"-->
+<!--            android:exported="false" />-->
     </application>
-
 </manifest>

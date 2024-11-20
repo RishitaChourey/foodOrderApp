@@ -1,81 +1,53 @@
 package com.example.foodorder;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowMenuActivity extends AppCompatActivity {
 
-    // Data structure to store the menu items and their quantities
-    private HashMap<String, Integer> orderMap;
+    private RecyclerView recyclerViewCart;
+    private MenuAdapter menuAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_menu);
 
-        orderMap = new HashMap<>(); // Initialize order map
+        // Initialize RecyclerView
+        recyclerViewCart = findViewById(R.id.cartRecyclerView);
 
-        // Example for Chai (Repeat for other items)
-        Button btnMinus1 = findViewById(R.id.btnMinus1);
-        Button btnPlus1 = findViewById(R.id.btnPlus1);
-        TextView tvQuantity1 = findViewById(R.id.tvQuantity1);
+        // Sample data for the adapter (replace with your actual data)
+        List<String> cartItems = new ArrayList<>();
+        cartItems.add("Aloo Pattice");
+        cartItems.add("Thick Coffee");
+        cartItems.add("Sandwich");
+        cartItems.add("Fresh Juice");
+        cartItems.add("Garam Chai");
 
-        String itemName1 = "Chai (Tea)";
-        int itemPrice1 = 20;
+        List<String> foodPrices = new ArrayList<>();
+        foodPrices.add("Rs.18");
+        foodPrices.add("Rs.30");
+        foodPrices.add("Rs.40");
+        foodPrices.add("Rs.30");
+        foodPrices.add("Rs.12");
 
-        // Initialize the quantity to 0
-        orderMap.put(itemName1, 0);
+        List<Integer> cartItemImages = new ArrayList<>();
+        cartItemImages.add(R.drawable.pattice);
+        cartItemImages.add(R.drawable.coldcoffee);// Replace with actual image resource
+        cartItemImages.add(R.drawable.chocolatesandwich);   // Replace with actual image resource
 
-        // Set click listeners for "+" and "-" buttons
-        btnPlus1.setOnClickListener(v -> {
-            int quantity = orderMap.get(itemName1);
-            quantity++;
-            orderMap.put(itemName1, quantity);
-            tvQuantity1.setText(String.valueOf(quantity));
-        });
+        cartItemImages.add(R.drawable.watermelonjuice);// Replace with actual image resource
+        cartItemImages.add(R.drawable.chai);
+        // Create an instance of the CartAdapter
+        menuAdapter = new MenuAdapter(cartItems, foodPrices, cartItemImages);
 
-        btnMinus1.setOnClickListener(v -> {
-            int quantity = orderMap.get(itemName1);
-            if (quantity > 0) {
-                quantity--;
-                orderMap.put(itemName1, quantity);
-            }
-            tvQuantity1.setText(String.valueOf(quantity));
-        });
-
-        // Place Order Button
-        Button btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
-        btnPlaceOrder.setOnClickListener(v -> {
-            StringBuilder orderDetails = new StringBuilder();
-            int totalBill = 0;
-
-            // Generate order summary
-            for (HashMap.Entry<String, Integer> entry : orderMap.entrySet()) {
-                String item = entry.getKey();
-                int quantity = entry.getValue();
-                if (quantity > 0) {
-                    int price = itemPrice1 * quantity; // Replace itemPrice1 with a map for dynamic pricing
-                    totalBill += price;
-                    orderDetails.append(item)
-                            .append(" x")
-                            .append(quantity)
-                            .append(" - ₹")
-                            .append(price)
-                            .append("\n");
-                }
-            }
-
-            // Pass the order details to OrderSummaryActivity
-            Intent intent = new Intent(ShowMenuActivity.this, OrderSummaryActivity.class);
-            intent.putExtra("orderDetails", orderDetails.toString());
-            intent.putExtra("totalBill", totalBill);
-            startActivity(intent);
-        });
+        // Set RecyclerView layout manager and adapter
+        recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewCart.setAdapter(menuAdapter);
     }
 }
