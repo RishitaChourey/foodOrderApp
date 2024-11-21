@@ -1,96 +1,138 @@
 package com.example.foodorder;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CartViewHolder> {
+public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> implements android.widget.Filterable {
 
-    private List<String> menuItems;          // List of food names
-    private List<String> foodPrices;         // List of food prices or descriptions
-    private List<Integer> cartItemImages;    // List of image resources for each item
-    private int[] itemQuantities;            // Array to store the quantity of each item
+    private List<String> menuItems;
+    private List<String> menuItemsFiltered; // Filtered list for search
+    private List<String> foodPrices;
+    private List<Integer> foodImages;
+    private int[] itemQuantities;
+    private OnAddClickListener onAddClickListener;
 
-    // Constructor to initialize the lists
-    public MenuAdapter(List<String> cartItems, List<String> foodPrices, List<Integer> cartItemImages) {
-        this.menuItems = cartItems;
-        this.foodPrices = foodPrices;  // Changed the variable name here
-        this.cartItemImages = cartItemImages;
-        this.itemQuantities = new int[cartItems.size()];
-        for (int i = 0; i < cartItems.size(); i++) {
-            itemQuantities[i] = 0; // Initialize quantity to 1 for each item
+    public interface OnAddClickListener {
+        void onAddClick(String itemName, String itemPrice, int quantity);
+    }
+
+    public MenuAdapter(List<String> menuItems, List<String> foodPrices, List<Integer> foodImages, OnAddClickListener onAddClickListener) {
+        this.menuItems = menuItems;
+        this.menuItemsFiltered = new ArrayList<>(menuItems); // Initially, filtered list is the same as menu items
+        this.foodPrices = foodPrices;
+        this.foodImages = foodImages;
+        this.onAddClickListener = onAddClickListener;
+        this.itemQuantities = new int[menuItems.size()];
+        for (int i = 0; i < menuItems.size(); i++) {
+            itemQuantities[i] = 0;
         }
     }
 
+    @NonNull
     @Override
-    public CartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Inflate the layout for a single item in the list
+    public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.menu_item, parent, false); // Replace with your actual layout file
-
-        return new CartViewHolder(view);
+                .inflate(R.layout.menu_item, parent, false);
+        return new MenuViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(CartViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
         holder.bind(position);
     }
 
     @Override
     public int getItemCount() {
-        return menuItems.size();
+        return menuItemsFiltered.size(); // Use the filtered list size
     }
 
-    // ViewHolder class for the CartAdapter
-    public class CartViewHolder extends RecyclerView.ViewHolder {
+    public class MenuViewHolder extends RecyclerView.ViewHolder {
+        private TextView foodName, foodPrice, quantityText;
+        private ImageView foodImage;
+        private Button addButton, increaseButton, decreaseButton;
 
-        // Define the views from the layout
-        private TextView foodName;
-        private TextView cartItemPrice;
-        private ImageView cartItemImage;
-        private TextView cartItemQuantity;
-        private Button increaseButton;
-        private Button decreaseButton;
-
-        // Constructor to initialize the views
-        public CartViewHolder(View itemView) {
+        public MenuViewHolder(@NonNull View itemView) {
             super(itemView);
-            foodName = itemView.findViewById(R.id.textView2);  // Food name TextView
-            cartItemPrice = itemView.findViewById(R.id.cartitemprice);  // Food price description
-            cartItemImage = itemView.findViewById(R.id.imageView3);  // Food image ImageView
-            cartItemQuantity = itemView.findViewById(R.id.quantityText);  // Quantity TextView
-            increaseButton = itemView.findViewById(R.id.buttonPlus);  // "+" Button
-            decreaseButton = itemView.findViewById(R.id.buttonMinus);  // "-" Button
+            foodName = itemView.findViewById(R.id.foodName);
+            foodPrice = itemView.findViewById(R.id.foodPrice);
+            foodImage = itemView.findViewById(R.id.imageView3);
+            quantityText = itemView.findViewById(R.id.foodQuantity);
+            addButton = itemView.findViewById(R.id.buttonRemove);
+            increaseButton = itemView.findViewById(R.id.buttonIncrease);
+            decreaseButton = itemView.findViewById(R.id.buttonDecrease);
         }
 
-        // Bind data to the views
         public void bind(int position) {
-            // Set the food name, price description, and image resource
-            foodName.setText(menuItems.get(position));  // Food name
-            cartItemPrice.setText(foodPrices.get(position));  // Food price or description
-            cartItemImage.setImageResource(cartItemImages.get(position));  // Food image
-            cartItemQuantity.setText(String.valueOf(itemQuantities[position]));  // Quantity text
+            foodName.setText(menuItemsFiltered.get(position));
+            foodPrice.setText(foodPrices.get(position));
+            foodImage.setImageResource(foodImages.get(position));
+            quantityText.setText(String.valueOf(itemQuantities[position]));
 
-            // Handle the quantity increase button click
             increaseButton.setOnClickListener(v -> {
                 itemQuantities[position]++;
-                cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
+                quantityText.setText(String.valueOf(itemQuantities[position]));
             });
 
-            // Handle the quantity decrease button click
             decreaseButton.setOnClickListener(v -> {
-                if (itemQuantities[position] > 1) { // Ensure the quantity doesn't go below 1
+                if (itemQuantities[position] > 0) {
                     itemQuantities[position]--;
-                    cartItemQuantity.setText(String.valueOf(itemQuantities[position]));
+                    quantityText.setText(String.valueOf(itemQuantities[position]));
+                }
+            });
+
+            addButton.setOnClickListener(v -> {
+                if (itemQuantities[position] > 0) {
+                    onAddClickListener.onAddClick(menuItemsFiltered.get(position), foodPrices.get(position), itemQuantities[position]);
+                } else {
+                    Toast.makeText(itemView.getContext(), "Please increase the quantity before adding!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
+    }
+
+    // Filter method to filter the items based on the search query
+    @Override
+    public android.widget.Filter getFilter() {
+        return new android.widget.Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                List<String> filteredList = new ArrayList<>();
+
+                if (constraint == null || constraint.length() == 0) {
+                    filteredList.addAll(menuItems); // If query is empty, show all items
+                } else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+                    for (String item : menuItems) {
+                        if (item.toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item); // Add items that match the search query
+                        }
+                    }
+                }
+
+                results.values = filteredList;
+                results.count = filteredList.size();
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                menuItemsFiltered.clear();
+                if (results.values != null) {
+                    menuItemsFiltered.addAll((List) results.values); // Update filtered list
+                }
+                notifyDataSetChanged(); // Notify adapter that data has changed
+            }
+        };
     }
 }

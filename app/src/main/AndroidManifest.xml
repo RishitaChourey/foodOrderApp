@@ -44,13 +44,11 @@
 <!--        <activity-->
 <!--            android:name=".FoodItem"-->
 <!--            android:exported="false" />-->
-        <activity
-            android:name=".ListFoods"
-            android:exported="false" />
-        <activity
-            android:name=".DetailActivity"
-            android:exported="false" />
-<!--        <activity-->
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <!--        <activity-->
 <!--            android:name=".Menu"-->
 <!--            android:exported="false" />-->
     </application>

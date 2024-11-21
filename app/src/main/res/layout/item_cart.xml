@@ -1,142 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="8dp"
-    android:background="#FFFFFF">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <!-- CardView for the item -->
+    <!-- CardView for item display -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="8dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Inner content of the CardView -->
+        <!-- Inner content inside CardView -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:layout_height="wrap_content">
 
-            <!-- Food item image -->
+            <!-- Image for the food item -->
+
+            <!-- Food name TextView -->
+
+            <!-- Food description TextView -->
+
+            <!-- Quantity Control Layout -->
+
+            <!-- Delete Button -->
+
             <ImageView
-                android:id="@+id/foodImage"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginEnd="12dp"
+                android:id="@+id/imageView3"
+                android:layout_width="85dp"
+                android:layout_height="93dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginBottom="20dp"
                 android:scaleType="centerCrop"
-                android:contentDescription="Food image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.055"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <!-- Food name -->
             <TextView
                 android:id="@+id/foodName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
                 android:text="Food Name"
+                android:textAlignment="textStart"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                app:layout_constraintStart_toEndOf="@+id/foodImage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.402"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintVertical_bias="0.263" />
 
-            <!-- Food price -->
             <TextView
                 android:id="@+id/foodPrice"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="₹ Price"
-                android:textSize="14sp"
-                android:textColor="#7C7C7C"
-                app:layout_constraintStart_toEndOf="@+id/foodImage"
-                app:layout_constraintTop_toBottomOf="@+id/foodName"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:text="Price"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.367"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.596" />
 
-            <!-- Quantity control layout -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/quantityLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@+id/foodImage"
-                app:layout_constraintTop_toBottomOf="@+id/foodPrice"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <!-- "-" Button -->
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonDecrease"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="4dp"
-                    android:backgroundTint="#FF7043"
-                    android:text="-"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:elevation="4dp"
-                    app:cornerRadius="12dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonRemove"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/foodName"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
 
                 <!-- Quantity Text -->
-                <TextView
-                    android:id="@+id/foodQuantity"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textSize="16sp"
-                    android:textColor="#000000"
-                    app:layout_constraintStart_toEndOf="@+id/buttonDecrease"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonIncrease"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <!-- "+" Button -->
+
+                <!-- "-" Button -->
+
+                <TextView
+                    android:id="@+id/foodQuantity"
+                    android:layout_width="37dp"
+                    android:layout_height="25dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonIncrease"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.521" />
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonIncrease"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="#FF7043"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="#DCA990"
                     android:text="+"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:elevation="4dp"
-                    app:cornerRadius="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintVertical_bias="1.0" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonDecrease"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="#DCA990"
+                    android:text="-"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/foodQuantity"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Remove button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:backgroundTint="#FF5252"
-                android:text="Remove"
+                android:backgroundTint="#B16144"
+                android:text="REMOVE"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                app:cornerRadius="12dp"
-                app:layout_constraintStart_toEndOf="@+id/foodImage"
-                app:layout_constraintTop_toBottomOf="@+id/quantityLayout"
-                app:layout_constraintEnd_toEndOf="parent" />
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.835"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/foodName" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
